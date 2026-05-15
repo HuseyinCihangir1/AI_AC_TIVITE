@@ -54,8 +54,8 @@ for name, model in models.items():
 best_model_name = max(results, key=results.get)
 best_model = models[best_model_name]
 
-print("\nBest Model:", best_model_name)
+print("\nEn Başarılı Model:", best_model_name)
 
 pickle.dump(best_model, open('../models/best_model.pkl', 'wb'))
 
-print("Best model kaydedildi.")
+print("En başarılı model kaydedildi.")
