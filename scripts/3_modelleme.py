@@ -14,8 +14,8 @@ models = {
 }
 
 # Eğitim ve Matris Çizimi (Döngü ile)
-# ... eğitim kodları ...
+# ... eğitim kodları(EKİP UYESI ARDA yapıcak bu kısmı)...
 
-# Modeli Arkadaşın (Görev 4) İçin Kaydet
+#(Görev 4) için modeli Kaydettik. Ekip uyesi arda yapıcak:
 pickle.dump(models["SVM"], open('../models/best_model.pkl', 'wb'))
 print("Görev 3 Tamamlandı: 3 model eğitildi ve best_model.pkl kaydedildi.")
