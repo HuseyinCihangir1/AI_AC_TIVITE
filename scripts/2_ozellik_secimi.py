@@ -2,36 +2,54 @@ import pandas as pd
 import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
+import os
+import pickle
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.feature_selection import SelectKBest, f_classif
 from sklearn.ensemble import RandomForestClassifier
 
-# 1. processed Veriyi Yükleme
-train = pd.read_csv('../data/train_cleaned.csv')
+# Dosya yollarını garantiye alma
+current_dir = os.path.dirname(os.path.abspath(__file__))
+data_path = os.path.join(current_dir, '../data/train_cleaned.csv')
+model_dir = os.path.join(current_dir, '../models')
+
+if not os.path.exists(model_dir):
+    os.makedirs(model_dir)
+
+# 1. İşlenmiş Veriyi Yükleme
+train = pd.read_csv(data_path)
 X = train.drop(['Activity', 'subject'], axis=1)
 y = train['Activity']
 
-# ÖZELLİK SEÇİMİ:
+# --- GÖREV 2: ÖZELLİK SEÇİMİ (25 PUAN) ---
 
-# Adım 1: Normalizasyon 
-scaler = MinMaxScaler() #veriyi 0-1 arasına kısıtlıyoruz
+# Adım 1: Normalizasyon (Zorunlu)
+scaler = MinMaxScaler()
 X_scaled = pd.DataFrame(scaler.fit_transform(X), columns=X.columns)
 
-# YÖNTEM 1: İstatistiksel Seçim(KBest)
-selector = SelectKBest(score_func=f_classif, k=50) #En yüksek f-skoruna sahip 50 özelliği seçicez
+# Arda'nın(diger uye) verileri aynı şekilde ölçekleyebilmesi için scaler'ı kaydediyoruz
+with open(os.path.join(model_dir, 'scaler.pkl'), 'wb') as f:
+    pickle.dump(scaler, f)
+
+# YÖNTEM 1: İstatistiksel Seçim (SelectKBest)
+# En yüksek f-skoruna sahip 50 özelliği seçiyoruz
+selector = SelectKBest(score_func=f_classif, k=50)
 X_best = selector.fit_transform(X_scaled, y)
 
-# YÖNTEM 2: Model Tabanlı Seçim(Random Forest)
-rf = RandomForestClassifier(n_estimators=100, random_state=42)#Tüm Özelliklerin sınıflandırmadaki etkisini bulur
+# Arda'nın hangi 50 özelliğin seçildiğini bilmesi için selector'ı kaydediyoruz
+with open(os.path.join(model_dir, 'feature_selector.pkl'), 'wb') as f:
+    pickle.dump(selector, f)
+
+# YÖNTEM 2: Model Tabanlı Seçim (Random Forest Feature Importance)
+rf = RandomForestClassifier(n_estimators=100, random_state=42)
 rf.fit(X_scaled, y)
 importances = pd.Series(rf.feature_importances_, index=X.columns).sort_values(ascending=False)
 
-
-# 3-YÖNTEM : Korelasyon Tabanlı Seçim
-plt.figure(figsize=(12,10))# Birbiriyle aşırı benzer  olan özellikleri tespit edicek kısım
-cor = X_scaled.iloc[:, :20].corr() # İlk 20 özellik için ısı haritasi cikaricaz
+# YÖNTEM 3: Korelasyon Tabanlı Seçim (Isı Haritası)
+plt.figure(figsize=(12,10))
+cor = X_scaled.iloc[:, :20].corr() # İlk 20 özellik için örnekleme
 sns.heatmap(cor, annot=True, cmap=plt.cm.Reds)
 plt.title("Özellikler Arası Korelasyon Isı Haritası")
-plt.show() # Bu grafiğin ekran görüntüsü(sunum için ss alınacak*)
+plt.show() # Bu grafiğin ekran görüntüsü sunum (Görev 5) için alınmalı!
 
-print("Görev 2 Tamamlandı: Normalizasyon ve 3 farklı özellik seçimi uygulandı.")
+print("Görev 2 Tamamlandı: Scaler ve Selector araçları 'models/' klasörüne kaydedildi.")
