@@ -14,7 +14,7 @@ models = {
 }
 
 # Eğitim ve Matris Çizimi (Döngü ile)
-# ... eğitim kodları(EKİP UYESI ARDA yapıcak bu kısmı)...
+# ... eğitim kodları(Ekip üyesi ARDA yapıcak bu kısmı)...
 
 #(Görev 4) için modeli Kaydettik. Ekip uyesi arda yapıcak:
 pickle.dump(models["SVM"], open('../models/best_model.pkl', 'wb'))
