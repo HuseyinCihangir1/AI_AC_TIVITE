@@ -1,0 +1,16 @@
+# Veri setlerini engelle (Kaggle'dan indirilen büyük dosyalar)
+data/*.csv
+data/*.zip
+
+# Python gereksiz dosyaları
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Sanal ortam (Varsa)
+venv/
+.venv/
+
+# Sistem dosyaları
+.DS_Store
+Thumbs.db
