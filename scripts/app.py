@@ -7,22 +7,28 @@ from lime.lime_tabular import LimeTabularExplainer
 from sklearn.model_selection import train_test_split
 import os
 
+
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
+model_dir = os.path.normpath(os.path.join(current_dir, '../models'))
 
-model_path = os.path.join(current_dir, '../models/best_model.pkl')
-scaler_path = os.path.join(current_dir, '../models/scaler.pkl')
-selector_path = os.path.join(current_dir, '../models/feature_selector.pkl')
+model_path = os.path.join(model_dir, 'best_model.pkl')
+scaler_path = os.path.join(model_dir, 'scaler.pkl')
+selector_path = os.path.join(model_dir, 'feature_selector.pkl')
 
-# 3. Dosyaları güvenli yollarla yükle
-with open(model_path, "rb") as f:
-    best_model = pickle.load(f)
+# streamlit hatalari icin bi dongu
+if not os.path.exists(model_path):
+    st.error(f"Model dosyası bulunamadı! Aranan konum: {model_path}")
+else:
+    with open(model_path, "rb") as f:
+        best_model = pickle.load(f)
 
-with open(scaler_path, "rb") as f:
-    scaler = pickle.load(f)
+    with open(scaler_path, "rb") as f:
+        scaler = pickle.load(f)
 
-with open(selector_path, "rb") as f:
-    feature_selector = pickle.load(f)
+    with open(selector_path, "rb") as f:
+        feature_selector = pickle.load(f)
+        
 # Veriyi yukle
 df = pd.read_csv("../data/train_cleaned.csv")
 
