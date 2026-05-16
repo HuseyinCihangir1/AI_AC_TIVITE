@@ -5,11 +5,24 @@ import pickle
 
 from lime.lime_tabular import LimeTabularExplainer
 from sklearn.model_selection import train_test_split
+import os
 
-# Modeli yukle
-with open("../models/best_model.pkl", "rb") as f:
-    model = pickle.load(f)
+current_dir = os.path.dirname(os.path.abspath(__file__))
 
+
+model_path = os.path.join(current_dir, '../models/best_model.pkl')
+scaler_path = os.path.join(current_dir, '../models/scaler.pkl')
+selector_path = os.path.join(current_dir, '../models/feature_selector.pkl')
+
+# 3. Dosyaları güvenli yollarla yükle
+with open(model_path, "rb") as f:
+    best_model = pickle.load(f)
+
+with open(scaler_path, "rb") as f:
+    scaler = pickle.load(f)
+
+with open(selector_path, "rb") as f:
+    feature_selector = pickle.load(f)
 # Veriyi yukle
 df = pd.read_csv("../data/train_cleaned.csv")
 
