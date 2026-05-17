@@ -18,8 +18,9 @@ from sklearn.preprocessing import label_binarize
 
 ### Modeli yukle
 with open("../models/best_model.pkl", "rb") as f:
-    model = pickle.load(f)
+    data = pickle.load(f)
 
+model = data["model"]
 
 ### Veriyi yukle
 df = pd.read_csv("../data/train_cleaned.csv")

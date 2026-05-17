@@ -54,8 +54,13 @@ for name, model in models.items():
 best_model_name = max(results, key=results.get)
 best_model = models[best_model_name]
 
-print("\nBest Model:", best_model_name)
+save_obj = {
+    "model": best_model,
+    "name": best_model_name
+}
 
-pickle.dump(best_model, open('../models/best_model.pkl', 'wb'))
+pickle.dump(save_obj, open('../models/best_model.pkl', 'wb'))
 
-print("Best model kaydedildi.")
+print("\nEn iyi model:", best_model_name)
+
+print("En iyi model kaydedildi.")

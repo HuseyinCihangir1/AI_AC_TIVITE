@@ -8,7 +8,10 @@ from sklearn.model_selection import train_test_split
 
 # Modeli yukle
 with open("../models/best_model.pkl", "rb") as f:
-    model = pickle.load(f)
+    data = pickle.load(f)
+
+model = data["model"]
+model_name = data["name"]
 
 # Veriyi yukle
 df = pd.read_csv("../data/train_cleaned.csv")
@@ -24,7 +27,7 @@ X_train, X_test, y_train, y_test = train_test_split(
 ### STREAMLIT UI
 st.title("Human Activity Recognition (HAR)")
 
-st.write("Model: SVM + LIME Explainability")
+st.write(f"Model: {model_name} + LIME Explainability")
 
 # Ornek secici
 index = st.slider("Bir örnek seç", 0, len(X_test)-1, 0)
