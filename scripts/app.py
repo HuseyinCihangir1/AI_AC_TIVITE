@@ -2,16 +2,32 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import pickle
+import os
 
 from lime.lime_tabular import LimeTabularExplainer
 from sklearn.model_selection import train_test_split
 
-# Modeli yukle
-with open("../models/best_model.pkl", "rb") as f:
-    data = pickle.load(f)
+# Path
+current_dir = os.path.dirname(os.path.abspath(__file__))
+model_dir = os.path.normpath(os.path.join(current_dir, '../models'))
 
-model = data["model"]
-model_name = data["name"]
+model_path = os.path.join(model_dir, 'best_model.pkl')
+scaler_path = os.path.join(model_dir, 'scaler.pkl')
+selector_path = os.path.join(model_dir, 'feature_selector.pkl')
+
+
+# Modeli yukle
+try:
+    with open(model_path, "rb") as f:
+        data = pickle.load(f)
+
+    model = data["model"]
+    model_name = data["name"]
+
+except Exception as e:
+    st.error(f"Model yüklenemedi: {e}")
+    st.stop()
+
 
 # Veriyi yukle
 df = pd.read_csv("../data/train_cleaned.csv")
