@@ -2,33 +2,33 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import pickle
+import os
 
 from lime.lime_tabular import LimeTabularExplainer
 from sklearn.model_selection import train_test_split
-import os
 
-
+# Path
 current_dir = os.path.dirname(os.path.abspath(__file__))
-
 model_dir = os.path.normpath(os.path.join(current_dir, '../models'))
 
 model_path = os.path.join(model_dir, 'best_model.pkl')
 scaler_path = os.path.join(model_dir, 'scaler.pkl')
 selector_path = os.path.join(model_dir, 'feature_selector.pkl')
 
-# streamlit hatalari icin bi dongu
-if not os.path.exists(model_path):
-    st.error(f"Model dosyası bulunamadı! Aranan konum: {model_path}")
-else:
+
+# Modeli yukle
+try:
     with open(model_path, "rb") as f:
-        best_model = pickle.load(f)
+        data = pickle.load(f)
 
-    with open(scaler_path, "rb") as f:
-        scaler = pickle.load(f)
+    model = data["model"]
+    model_name = data["name"]
 
-    with open(selector_path, "rb") as f:
-        feature_selector = pickle.load(f)
-        
+except Exception as e:
+    st.error(f"Model yüklenemedi: {e}")
+    st.stop()
+
+
 # Veriyi yukle
 df = pd.read_csv("../data/train_cleaned.csv")
 
@@ -43,7 +43,7 @@ X_train, X_test, y_train, y_test = train_test_split(
 ### STREAMLIT UI
 st.title("Human Activity Recognition (HAR)")
 
-st.write("Model: SVM + LIME Explainability")
+st.write(f"Model: {model_name} + LIME Explainability")
 
 # Ornek secici
 index = st.slider("Bir örnek seç", 0, len(X_test)-1, 0)

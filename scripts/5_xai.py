@@ -10,7 +10,9 @@ from sklearn.model_selection import train_test_split
 
 # En iyi modeli yukle
 with open("../models/best_model.pkl", "rb") as f:
-    model = pickle.load(f)
+    data = pickle.load(f)
+
+model = data["model"]
 
 # Veriyi yukle
 df = pd.read_csv("../data/train_cleaned.csv")
