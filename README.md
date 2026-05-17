@@ -30,7 +30,7 @@ Veri seti akademik standartlara uygun olarak **%70 Eğitim, %15 Doğrulama ve %1
 
 1. Gerekli kütüphaneleri yükleyin:
    
-   pip install pandas numpy scikit-learn matplotlib seaborn streamlit lime
+   pip install -r requirements.txt
 
 2. Model değerlendirme metriklerini ve analiz grafiklerini çalıştırmak için:
 
