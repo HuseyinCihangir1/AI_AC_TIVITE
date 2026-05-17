@@ -2,12 +2,13 @@ import pandas as pd
 import numpy as np
 from scipy import stats
 
-# Veri Yükleme
+# Veri Yükleme:
 train = pd.read_csv('../data/train.csv')
 test = pd.read_csv('../data/test.csv')
 
-# Görev 1: Aykırı Değer Temizliği (Z-Score)
-# Sadece sayısal sütunlarda aykırı değer kontrolü yapıyoruz
+# -Görev 1: (Z-Score) hesaplaması-
+
+# Sadece sayısal sütunlar için aykırı değer kontrolü yapıyoruz:
 X_train = train.drop(['Activity', 'subject'], axis=1)
 z_scores = stats.zscore(X_train)
 abs_z_scores = np.abs(z_scores)

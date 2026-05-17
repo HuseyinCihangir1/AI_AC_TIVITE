@@ -61,6 +61,6 @@ save_obj = {
 
 pickle.dump(save_obj, open('../models/best_model.pkl', 'wb'))
 
-print("\nEn iyi model:", best_model_name)
+print("\nEn Başarılı Model:", best_model_name)
 
-print("En iyi model kaydedildi.")
+print("En başarılı model kaydedildi.")

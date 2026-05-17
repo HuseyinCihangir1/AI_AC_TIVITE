@@ -14,3 +14,8 @@ venv/
 # Sistem dosyaları
 .DS_Store
 Thumbs.db
+
+
+#models 
+
+models/
