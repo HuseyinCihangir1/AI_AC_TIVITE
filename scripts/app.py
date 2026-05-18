@@ -45,10 +45,15 @@ st.title("Human Activity Recognition (HAR)")
 
 st.write(f"Model: {model_name} + LIME Explainability")
 
+st.subheader("Dataset Bilgisi")
+st.info(f"Veri seti: train_cleaned.csv | Örnek sayısı: {len(df)} | Feature sayısı: {X.shape[1]}")
+
+
 # Ornek secici
 index = st.slider("Bir örnek seç", 0, len(X_test)-1, 0)
 
 sample = X_test.iloc[index]
+true_label = y_test.iloc[index]
 
 st.subheader("Seçilen Veri")
 st.write(sample)
@@ -56,8 +61,18 @@ st.write(sample)
 # prediction
 pred = model.predict(sample.values.reshape(1, -1))[0]
 
+st.subheader("Gerçek Sınıf")
+st.info(true_label)
+
 st.subheader("Tahmin")
 st.success(pred)
+
+# doğruluk kontrolü
+if pred == true_label:
+    st.success("✔ Doğru Tahmin")
+else:
+    st.error("❌ Yanlış Tahmin")
+
 
 ### LIME EXPLANATION
 st.subheader("Model Açıklaması (LIME)")
